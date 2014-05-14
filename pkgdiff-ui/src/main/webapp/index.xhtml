@@ -9,16 +9,17 @@
 
 
 <f:view>
-
+	<ice:outputStyle href="/stylesheets/application.css" />
+	<ice:outputStyle href="/stylesheets/buttons.css" />
 	<h:head>
 		<title>PkgDiff WEBAPP</title>
 	</h:head>
-	<h:body>
-		<h:form id="form">
-			<ice:outputStyle href="/xmlhttp/css/rime/rime.css" />
-			<ice:outputText value="Prova" />
+	<h:body class="theme-A1 controller-account action-login">
 
-			<ace:fileEntry></ace:fileEntry>
+		<f:subview id="header">
+			<ui:include src="/common/header.jspx" />
+		</f:subview>
+		<h:form id="form">
 		</h:form>
 	</h:body>
 </f:view>

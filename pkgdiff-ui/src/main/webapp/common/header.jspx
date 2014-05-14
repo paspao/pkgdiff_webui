@@ -1,0 +1,16 @@
+<ui:composition	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div id="wrapper">
+		<div id="wrapper2">
+			<div id="wrapper3">
+				<div id="header">
+					<h1>PkgDiff WebApp</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</ui:composition>
