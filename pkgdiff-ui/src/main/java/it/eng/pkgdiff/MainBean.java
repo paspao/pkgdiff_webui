@@ -5,6 +5,12 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+/**
+ * MasterBean del progetto
+ * @author s254700
+ *
+ */
+
 @ManagedBean
 @ViewScoped
 public class MainBean implements Serializable {
