@@ -12,6 +12,6 @@ public class MainBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public String getVersion() {
-		return "0.0.1";
+		return "1.0";
 	}
 }
