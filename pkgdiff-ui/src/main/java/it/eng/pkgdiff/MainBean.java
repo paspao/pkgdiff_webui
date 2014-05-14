@@ -7,7 +7,7 @@ import javax.faces.bean.ViewScoped;
 
 /**
  * MasterBean del progetto
- * @author s254700
+ * @author Russo Pasquale
  *
  */
 
