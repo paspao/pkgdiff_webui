@@ -53,4 +53,14 @@
 
 
 	</dependencies>
+	
+	
+	<repositories>
+	     <repository>
+            <id>inail-nexus</id>
+            <url>http://161.27.213.71:8081/nexus/content/groups/public</url>
+     </repository>
+	</repositories>
+	
+	
 </project>
