@@ -1,15 +1,32 @@
 package it.eng.pkgdiff.batch;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.Scanner;
-
+/**
+ * 
+ * @author Pasquale Paola - Engineering Ingegneria Informatica
+ *
+ */
 public class ExecPkgDiff {
 
+	/**
+	 * Permette l'esecuzione del comando pkgdiff {@link https://github.com/lvc/pkgdiff}
+	 * @param pathFirstJar Percorso del primo jar.
+	 * @param pathSecondJar Percorso del secondo jar.
+	 * @param pathTempDir Percorso alla directory temporanea.
+	 * @param pathReportFileHtml Percorso al file html che conterrà il report.
+	 * @param ou Stream di output del comando.
+	 */
 	public static void execute(String pathFirstJar, String pathSecondJar,
-			String pathTempDir, String pathReportDir) {
+			String pathTempDir, String pathReportFileHtml, OutputStream ou) {
+
+		PrintWriter printer = new PrintWriter(ou);
+
 		try {
 			String command = "pkgdiff " + pathFirstJar + " " + pathSecondJar
-					+ " -report-path " + pathReportDir + " -tmp-dir "
+					+ " -report-path " + pathReportFileHtml + " -tmp-dir "
 					+ pathTempDir + " -details";
 
 			System.out.println("Executing command: " + command);
@@ -17,9 +34,14 @@ public class ExecPkgDiff {
 			Scanner sc = new Scanner(p.getInputStream());
 
 			while (sc.hasNext())
-				System.out.println(sc.nextLine());
+			{
+				printer.write(sc.nextLine()+"\n");
+				printer.flush();
+			}
+
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			printer.write(e.getMessage());
 		}
+		printer.close();
 	}
 }
