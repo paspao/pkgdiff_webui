@@ -47,7 +47,7 @@ public class DownloadMavenDependency {
 			groupId=doc.getElementsByTagName("groupId").item(0).getTextContent();
 			artifactId=doc.getElementsByTagName("artifactId").item(0).getTextContent();
 			version=doc.getElementsByTagName("version").item(0).getTextContent();
-			
+			is.close();
 		} catch (ParserConfigurationException e) {
 			System.err.println(e.getMessage());
 		} catch (SAXException e) {
@@ -95,14 +95,15 @@ public class DownloadMavenDependency {
 				FileOutputStream fos = new FileOutputStream(downloadedPath+File.separator+artifactId+"-"+version+".jar");
 				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 				fos.close();
+				rbc.close();
 				System.out.println("Downladed!");
 				break;
 			} catch (MalformedURLException e) {
 				System.err.println(e.getMessage());
-				System.out.println("Downlad failed!");
+				System.err.println("Downlad failed!");
 			} catch (IOException e) {
 				System.err.println(e.getMessage());
-				System.out.println("Downlad failed!");
+				System.err.println("Downlad failed!");
 			}
 		}
 		
