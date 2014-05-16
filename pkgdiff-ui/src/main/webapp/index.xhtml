@@ -20,6 +20,44 @@
 			<ui:include src="/common/header.jspx" />
 		</f:subview>
 		<h:form id="form">
+			<ace:textEntry id="groupId" value="#{mainBean.groupId}" label="Group Id" labelPosition="left" required="true" requiredIndicator="(*)" indicatorPosition="right">
+                        <!--<ace:ajax render="@this firstNameOutput firstNameMsg"/>-->
+            </ace:textEntry>
+            <br></br>
+                    
+			<ace:textEntry id="artifactId" value="#{mainBean.artifactId}" label="Artifact Id" labelPosition="left" required="true" requiredIndicator="(*)" indicatorPosition="right">
+                        <!--<ace:ajax render="@this firstNameOutput firstNameMsg"/>-->
+            </ace:textEntry>
+            <br></br>
+                                        
+			<ace:textEntry id="versionId" value="#{mainBean.versionId}" label="Version" labelPosition="left" required="true" requiredIndicator="(*)" indicatorPosition="right">
+                        <!--  <ace:ajax render="@this firstNameOutput firstNameMsg"/> -->
+            </ace:textEntry>
+                                        
+			
+
+			<br></br>
+			
+			<ace:fileEntry id="file-entry" 
+                 relativePath="/files/"
+                 maxFileCount="1" 
+                 maxFileCountMessage="Limited to 10 files uploaded concurrantly." 
+                 fileEntryListener="#{mainBean.sampleListener}" 
+                 maxFileSize="6291456" 
+                 maxFileSizeMessage="Submitted file is too large." 
+                 maxTotalSize="18874368" 
+                 maxTotalSizeMessage="Total size of submitted files is too large." 
+                 required="false" 
+                 requiredMessage="The file is required to submit this form." 
+                 useOriginalFilename="true" 
+                 useSessionSubdir="true"/>  
+			<br></br>      
+          	<h:commandButton id="commandButtonSubmit" type="submit" value="Upload File" />
+          	<br></br>
+			<ace:pushButton id="pushBttnAction"			
+                                    value="Confronta Archivio"
+                                    action="#{mainBean.executeButtonConfronta}">                        
+                    </ace:pushButton>
 		</h:form>
 	</h:body>
 </f:view>
