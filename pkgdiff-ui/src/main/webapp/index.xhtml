@@ -39,7 +39,8 @@
 			<br></br>
 			
 			<ace:fileEntry id="file-entry" 
-                 relativePath="/files/"
+				 absolutePath="#{mainBean.absolutePath}"
+                 relativePath="./TmpUpload/"
                  maxFileCount="1" 
                  maxFileCountMessage="Limited to 10 files uploaded concurrantly." 
                  fileEntryListener="#{mainBean.sampleListener}" 
@@ -55,9 +56,9 @@
           	<h:commandButton id="commandButtonSubmit" type="submit" value="Upload File" />
           	<br></br>
 			<ace:pushButton id="pushBttnAction"			
-                                    value="Confronta Archivio"
-                                    action="#{mainBean.executeButtonConfronta}">                        
-                    </ace:pushButton>
+                 value="Confronta Archivio"
+                 action="#{mainBean.executeButtonConfronta}">                        
+             </ace:pushButton>
 		</h:form>
 	</h:body>
 </f:view>
