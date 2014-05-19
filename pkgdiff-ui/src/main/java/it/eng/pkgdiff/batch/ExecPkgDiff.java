@@ -25,7 +25,8 @@ public class ExecPkgDiff {
 		PrintWriter printer = new PrintWriter(ou);
 
 		try {
-			String command = "pkgdiff " + pathFirstJar + " " + pathSecondJar
+			String pkgDiffCommand=Util.getResourceProperties().getProperty("pkgdiff.path");
+			String command = pkgDiffCommand+" " + pathFirstJar + " " + pathSecondJar
 					+ " -report-path " + pathReportFileHtml + " -tmp-dir "
 					+ pathTempDir + " -details";
 
