@@ -44,8 +44,11 @@ public class MainBean implements Serializable {
     private String uploadArtifactPath;
     private String tmpDirPath;
     private String reportDirPath;
+    private String ulrReportDir;
     private String useSessionId = "true";
     private String responseConfronto;
+    private String urlDettaglio;
+    
     
     private Properties properties;
 	
@@ -70,6 +73,10 @@ public class MainBean implements Serializable {
                 	reportDirPath = properties.getProperty("reportDirPath");
     				System.out.println("set Defautl reportDirPath = "+reportDirPath);
     			}
+                if (properties.getProperty("ulrReportDir") != null) {
+                	ulrReportDir = properties.getProperty("ulrReportDir");
+    				System.out.println("set Defautl ulrReportDir = "+ulrReportDir);
+    			}
                 if (properties.getProperty("userSessionId") != null) {
                 	useSessionId = properties.getProperty("userSessionId");
     				System.out.println("set Defautl userSessionId = "+useSessionId);
@@ -86,6 +93,14 @@ public class MainBean implements Serializable {
 	}
 	
 	
+	public String getUrlDettaglio() {
+		return urlDettaglio;
+	}
+
+	public void setUrlDettaglio(String urlDettaglio) {
+		this.urlDettaglio = urlDettaglio;
+	}
+
 	public String getResponseConfronto() {
         return responseConfronto;
     }
@@ -226,6 +241,7 @@ public class MainBean implements Serializable {
 				reportDirPath+appSessionIdSubdir+"/changes_report.html",appResultExecPkgDiff);
 		System.out.println("Effettuato ExecPkgDiff:"+appResultExecPkgDiff);
 		responseConfronto = appResultExecPkgDiff.toString();
+		urlDettaglio = ulrReportDir +appSessionIdSubdir+"/changes_report.html";
         return null;
     }
 }
