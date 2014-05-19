@@ -7,7 +7,7 @@ Interfaccia grafica per il tool pkgdiff.
 
 Che cos'è pkgdiff?
 ------------------
-Al seguente url è disponibile  https://github.com/lvc/pkgdiff un tool che permette
+Al seguente url è disponibile  [https://github.com/lvc/pkgdiff](https://github.com/lvc/pkgdiff) un tool che permette
 il confronto tra due artefatti (jar). A seguito del confronto viene generato un report che sintetizza
 il risultato.
 
