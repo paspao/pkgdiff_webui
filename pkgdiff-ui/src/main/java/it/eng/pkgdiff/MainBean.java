@@ -43,7 +43,9 @@ public class MainBean implements Serializable {
     private String absolutePath;
     private String uploadArtifactPath;
     private String tmpDirPath;
+    private String reportDirPath;
     private String useSessionId = "true";
+    private String responseConfronto;
     
     private Properties properties;
 	
@@ -64,6 +66,10 @@ public class MainBean implements Serializable {
                 	tmpDirPath = properties.getProperty("tmpDirPath");
     				System.out.println("set Defautl tmpDirPath = "+tmpDirPath);
     			}
+                if (properties.getProperty("reportDirPath") != null) {
+                	reportDirPath = properties.getProperty("reportDirPath");
+    				System.out.println("set Defautl reportDirPath = "+reportDirPath);
+    			}
                 if (properties.getProperty("userSessionId") != null) {
                 	useSessionId = properties.getProperty("userSessionId");
     				System.out.println("set Defautl userSessionId = "+useSessionId);
@@ -79,6 +85,15 @@ public class MainBean implements Serializable {
 		return "1.0";
 	}
 	
+	
+	public String getResponseConfronto() {
+        return responseConfronto;
+    }
+
+    public void setResponseConfronto(String aResponseConfronto) {
+        this.responseConfronto = aResponseConfronto;
+    }
+    
 	public String getUseSessionId() {
         return useSessionId;
     }
@@ -173,7 +188,7 @@ public class MainBean implements Serializable {
     
 	// utilizzata dal Bottone di Confronta Archive
 	public String executeButtonConfronta() { 
-		
+		String myFileMaven = "";
 		FacesContext fCtx = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) fCtx.getExternalContext().getSession(false);
 		String sessionId = session.getId();
@@ -191,8 +206,8 @@ public class MainBean implements Serializable {
 					appDir.mkdir();
 				}
 			}			
-			DownloadMavenDependency.download(groupId, artifactId,versionId,uploadArtifactPath+appSessionIdSubdir);
-			System.out.println("Download Maven Dipendency Effettuato");
+			myFileMaven = DownloadMavenDependency.download(groupId, artifactId,versionId,uploadArtifactPath+appSessionIdSubdir);
+			System.out.println("Download Maven Dipendency Effettuato:"+myFileMaven);
 		} catch (Exception e){ 
 			e.printStackTrace();
 		}
@@ -205,10 +220,12 @@ public class MainBean implements Serializable {
 		System.out.println("Effettuo ExecPkgDiff");
 		OutputStream appResultExecPkgDiff = new ByteArrayOutputStream ();
 		
-		 ExecPkgDiff.execute(uploadArtifactPath+appSessionIdSubdir+"/"+fileName,
+		 //ExecPkgDiff.execute(uploadArtifactPath+appSessionIdSubdir+"/"+fileName,
+		ExecPkgDiff.execute(myFileMaven,
 				absolutePath+appSessionIdSubdir+"/"+fileName, tmpDirPath+appSessionIdSubdir,
-				"changes_report.html",appResultExecPkgDiff);
+				reportDirPath+appSessionIdSubdir+"/changes_report.html",appResultExecPkgDiff);
 		System.out.println("Effettuato ExecPkgDiff:"+appResultExecPkgDiff);
+		responseConfronto = appResultExecPkgDiff.toString();
         return null;
     }
 }

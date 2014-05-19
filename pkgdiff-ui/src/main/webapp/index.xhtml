@@ -51,12 +51,15 @@
 			<br></br>      
           	<h:commandButton id="commandButtonSubmit" type="submit" value="Upload File" />
           	<br></br>
-          	<br></br>
+			
+			<br></br>
 			<ace:pushButton id="pushBttnAction"			
                  value="Confronta Archivio"
                  action="#{mainBean.executeButtonConfronta}">                        
-             </ace:pushButton>
+             </ace:pushButton>            
 		</h:form>
+		 <br></br> 
+         <ice:outputText value="#{mainBean.responseConfronto}"></ice:outputText>
 	</h:body>
 </f:view>
 </html>
