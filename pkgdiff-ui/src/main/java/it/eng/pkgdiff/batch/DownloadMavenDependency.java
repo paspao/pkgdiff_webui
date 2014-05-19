@@ -73,8 +73,8 @@ public class DownloadMavenDependency {
 		Properties prop = new Properties();
 
 		path = groupId.replace(".", "/")+"/"+artifactId+"/"+version+"/"+ artifactId + "-" + version + ".jar";
-		InputStream is = ClassLoader.getSystemClassLoader()
-				.getResourceAsStream("resources.properties");
+		//InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("./resources.properties");
+		InputStream is = DownloadMavenDependency.class.getClassLoader().getResourceAsStream("./resources.properties");
 		try {
 			prop.load(is);
 			String value = prop.getProperty("maven.repos");
