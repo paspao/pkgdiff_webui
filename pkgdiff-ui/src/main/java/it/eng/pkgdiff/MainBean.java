@@ -1,8 +1,10 @@
 package it.eng.pkgdiff;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.Properties;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.icefaces.ace.component.fileentry.FileEntry;
 import org.icefaces.ace.component.fileentry.FileEntryEvent;
@@ -38,6 +41,10 @@ public class MainBean implements Serializable {
     private String versionId;
     
     private String absolutePath;
+    private String uploadArtifactPath;
+    private String tmpDirPath;
+    private String useSessionId = "true";
+    
     private Properties properties;
 	
     public MainBean (){
@@ -49,6 +56,19 @@ public class MainBean implements Serializable {
                 properties.load(resourceAsStream);
                 absolutePath = properties.getProperty("uploadPath");
                 System.out.println("absolutePath:"+absolutePath);
+                if (properties.getProperty("uploadArtifactPath") != null) {
+                	uploadArtifactPath = properties.getProperty("uploadArtifactPath");
+    				System.out.println("set Defautl downloadedPath = "+uploadArtifactPath);
+    			}
+                if (properties.getProperty("tmpDirPath") != null) {
+                	tmpDirPath = properties.getProperty("tmpDirPath");
+    				System.out.println("set Defautl tmpDirPath = "+tmpDirPath);
+    			}
+                if (properties.getProperty("userSessionId") != null) {
+                	useSessionId = properties.getProperty("userSessionId");
+    				System.out.println("set Defautl userSessionId = "+useSessionId);
+    			}
+                
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,6 +79,15 @@ public class MainBean implements Serializable {
 		return "1.0";
 	}
 	
+	public String getUseSessionId() {
+        return useSessionId;
+    }
+
+    public void setUseSessionId(String anUseSessionId) {
+        this.useSessionId = anUseSessionId;
+    }
+	
+    
 	public String getAbsolutePath() {
         return absolutePath;
     }
@@ -93,8 +122,7 @@ public class MainBean implements Serializable {
     
 	// utilizzata dal fileEntry
 	public void sampleListener(FileEntryEvent e)
-    {
-		System.out.println("sampleListener");
+    {		
         FileEntry fe = (FileEntry)e.getComponent();
         FileEntryResults results = fe.getResults();
         File parent = null;
@@ -144,26 +172,43 @@ public class MainBean implements Serializable {
     }
     
 	// utilizzata dal Bottone di Confronta Archive
-	public String executeButtonConfronta() {        	
-		System.out.println("Effettuo Download per groupId:"+groupId);
-		System.out.println("artifactId:"+artifactId);
-		System.out.println("versionId:"+versionId);
+	public String executeButtonConfronta() { 
+		
+		FacesContext fCtx = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) fCtx.getExternalContext().getSession(false);
+		String sessionId = session.getId();
+		
+		String appSessionIdSubdir = "";
+		if (useSessionId.equalsIgnoreCase("true")){
+			appSessionIdSubdir = "/"+sessionId;
+		}
+		
 		try {
 			// Sostituire la url corretta letta del properties
-			DownloadMavenDependency.download(groupId, artifactId,versionId,"http://161.27.213.71:8081/nexus/content/groups/public");
+			if (!appSessionIdSubdir.isEmpty()) {
+				File appDir = new File (uploadArtifactPath+appSessionIdSubdir);
+				if (!appDir.exists()){
+					appDir.mkdir();
+				}
+			}			
+			DownloadMavenDependency.download(groupId, artifactId,versionId,uploadArtifactPath+appSessionIdSubdir);
+			System.out.println("Download Maven Dipendency Effettuato");
 		} catch (Exception e){ 
 			e.printStackTrace();
 		}
+		
 		System.out.println("fileName:"+fileName);
-		File app = new File ("./TmpUpload/"+fileName);		
-		System.out.println("Effettuo getAbsolutePath:"+app.exists());		
-		// Sostituire i pkg Corretti e i path Corretti
+		System.out.println("pathArtifact:"+uploadArtifactPath+appSessionIdSubdir);		
+		System.out.println("absolutePath:"+absolutePath+appSessionIdSubdir);
+		
 			
 		System.out.println("Effettuo ExecPkgDiff");
+		OutputStream appResultExecPkgDiff = new ByteArrayOutputStream ();
 		
-		//ExecPkgDiff.execute("PrestazioniEJB.jar",
-		//		"PrestazioniEJB.jar", "target",
-		//		"changes_report.html",System.out);		
+		 ExecPkgDiff.execute(uploadArtifactPath+appSessionIdSubdir+"/"+fileName,
+				absolutePath+appSessionIdSubdir+"/"+fileName, tmpDirPath+appSessionIdSubdir,
+				"changes_report.html",appResultExecPkgDiff);
+		System.out.println("Effettuato ExecPkgDiff:"+appResultExecPkgDiff);
         return null;
     }
 }

@@ -78,7 +78,7 @@ public class DownloadMavenDependency {
 		try {
 			prop.load(is);
 			String value = prop.getProperty("maven.repos");
-			repositories = value.split(",");
+			repositories = value.split(",");					
 		} catch (IOException e1) {
 
 			e1.printStackTrace();
