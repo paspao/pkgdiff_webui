@@ -52,6 +52,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<name>Pkgdiff-Ui</name>
 </project>
