@@ -36,7 +36,7 @@ public class DownloadMavenDependency {
 	 *            Directory dove scariacare l'artefatto.
 	 * @return Il path al file scaricato.
 	 */
-	public static String download(String dep,String downloadedPath) {
+	public static Artifact download(String dep,String downloadedPath) {
 		
 		InputStream is = new ByteArrayInputStream( dep.getBytes());
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -80,9 +80,11 @@ public class DownloadMavenDependency {
 	 *            Directory dove scariacare l'artefatto.
 	 * @return Il path al file scaricato.
 	 */
-	public static String download(String groupId, String artifactId,
+	public static Artifact download(String groupId, String artifactId,
 			String version,String downloadedPath) {
-		String myFile = downloadedPath+File.separator+artifactId+"-"+version+".jar";
+		Artifact artifact = new Artifact();
+		
+		artifact.setFile(downloadedPath+File.separator+artifactId+"-"+version+".jar");
 		String path = null;
 		String[] repositories = null;
 
@@ -98,11 +100,12 @@ public class DownloadMavenDependency {
 				website = new URL(repo + "/" + path);
 				System.out.println("Try downloading " + repo + "/" + path);
 				ReadableByteChannel rbc = Channels.newChannel(website.openStream());				
-				FileOutputStream fos = new FileOutputStream(myFile);
+				FileOutputStream fos = new FileOutputStream(artifact.getFile());
 				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 				fos.close();
 				rbc.close();
 				System.out.println("Downladed!");
+				artifact.setUrl(repo + "/" + path);
 				break;
 			} catch (MalformedURLException e) {
 				System.err.println(e.getMessage());
@@ -116,7 +119,28 @@ public class DownloadMavenDependency {
 		}
 		if (failed == repositories.length)
 		  return null;
-		return myFile;		
+		return artifact;		
+	}
+	
+	public static class Artifact {
+	  private String url = null;
+	  private String file = null;
+	  
+	  public String getUrl() {
+		return url;
+ 	  } 
+	  
+	  public void setUrl(String url) {
+		this.url = url;
+	  }
+	  
+	  public String getFile() {
+		return file;
+	  }
+	  
+	  public void setFile(String file) {
+		this.file = file;
+	  }
 	}
 
 }

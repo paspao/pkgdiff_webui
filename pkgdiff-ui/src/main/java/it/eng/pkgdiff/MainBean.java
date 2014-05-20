@@ -1,6 +1,7 @@
 package it.eng.pkgdiff;
 
 import it.eng.pkgdiff.batch.DownloadMavenDependency;
+import it.eng.pkgdiff.batch.DownloadMavenDependency.Artifact;
 import it.eng.pkgdiff.batch.ExecPkgDiff;
 import it.eng.pkgdiff.batch.Util;
 
@@ -279,14 +280,24 @@ public class MainBean implements Serializable {
 				appDir = new File(uploadArtifactPath + appSessionIdSubdir);
 				appDir.mkdir();
 			}
-			myFileMaven = DownloadMavenDependency.download(groupId, artifactId,
+			String fromUrl = "";			
+			Artifact artifact = DownloadMavenDependency.download(groupId, artifactId,
 					versionId, uploadArtifactPath + appSessionIdSubdir);
-			if (myFileMaven == null) {
+			if (artifact == null) {
 				FacesMessage msg = new FacesMessage(
 						FacesMessage.SEVERITY_ERROR, "Artifact non trovato!",
 						"Artifact non trovato!");
 				FacesContext.getCurrentInstance().addMessage(null, msg);
+				return;
 			}
+
+			myFileMaven = artifact.getFile();
+			fromUrl = artifact.getUrl();
+
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Artifact scaricato dal repository [" + fromUrl + "]",
+					"Artifact scaricato dal repository [" + fromUrl + "]");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+
 		} catch (Exception e) {
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Errore download artifact [" + e + "]",

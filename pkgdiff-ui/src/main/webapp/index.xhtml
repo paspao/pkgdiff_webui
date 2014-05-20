@@ -44,6 +44,7 @@
 				<fieldset>
 					<legend>Secondo file</legend>
 					<ice:panelGroup>
+						<ice:messages globalOnly="true" />
 						<ice:selectOneRadio value="#{mainBean.tipoFile}"
 							partialSubmit="true" rendered="false">
 							<f:selectItem itemLabel="Cerca per artifact"
@@ -57,7 +58,6 @@
 						<ice:panelGroup
 							rendered="#{mainBean.tipoFile eq 'byArtifact' and mainBean.myFileMaven eq ''}">
 							<ice:panelGrid columns="1">
-								<ice:messages globalOnly="true" />
 								<ace:textEntry id="groupId" value="#{mainBean.groupId}"
 									label="Group Id" labelPosition="left" requiredIndicator="(*)"
 									indicatorPosition="right">
