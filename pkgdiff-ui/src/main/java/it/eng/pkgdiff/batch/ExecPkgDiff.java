@@ -34,12 +34,16 @@ public class ExecPkgDiff {
 			Process p = Runtime.getRuntime().exec(command);
 			Scanner sc = new Scanner(p.getInputStream());
 
+			printer.write("<div>");
+			printer.write("<h2>Result</h2>");
+			printer.write("<ul>");
 			while (sc.hasNext())
 			{
-				printer.write(sc.nextLine()+"\n");
+				printer.write("<li>" + sc.nextLine() + "</li>");
 				printer.flush();
 			}
-
+			printer.write("</ul>");
+			printer.write("</div>");
 		} catch (IOException e) {
 			printer.write(e.getMessage());
 		}

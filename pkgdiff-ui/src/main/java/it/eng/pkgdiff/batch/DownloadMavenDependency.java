@@ -90,8 +90,8 @@ public class DownloadMavenDependency {
 		
 		String value = Util.getResourceProperties().getProperty("maven.repos");
 		repositories = value.split(",");
+		int failed = 0;
 		
-
 		for (String repo : repositories) {
 			URL website;
 			try {
@@ -107,11 +107,15 @@ public class DownloadMavenDependency {
 			} catch (MalformedURLException e) {
 				System.err.println(e.getMessage());
 				System.err.println("Downlad failed!");
+				failed++;
 			} catch (IOException e) {
 				System.err.println(e.getMessage());
 				System.err.println("Downlad failed!");
+				failed++;
 			}
 		}
+		if (failed == repositories.length)
+		  return null;
 		return myFile;		
 	}
 

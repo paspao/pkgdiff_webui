@@ -1,5 +1,7 @@
 package it.eng.pkgdiff.batch;
 
+import it.eng.pkgdiff.MainBean;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -26,8 +28,7 @@ public class Util {
 			synchronized (Util.class) {
 				try {
 					prop = new Properties();
-					InputStream is = ClassLoader.getSystemClassLoader()
-							.getResourceAsStream("resources.properties");
+					InputStream is = Util.class.getClassLoader().getResourceAsStream("./resources.properties");
 					prop.load(is);
 					is.close();
 
