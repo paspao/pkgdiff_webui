@@ -93,16 +93,16 @@ public class MainBean implements Serializable {
 					.getResourceAsStream("resources.properties");
 			if (resourceAsStream != null) {
 				properties.load(resourceAsStream);
-				absolutePath =realPath + properties.getProperty("uploadPath");
+				absolutePath =realPath+File.separator + properties.getProperty("uploadPath");
 				System.out.println("absolutePath:" + absolutePath);
 				if (properties.getProperty("uploadArtifactPath") != null) {
-					uploadArtifactPath = realPath +properties
+					uploadArtifactPath = realPath+File.separator +properties
 							.getProperty("uploadArtifactPath");
 					System.out.println("set Defautl downloadedPath = "
 							+ uploadArtifactPath);
 				}
 				if (properties.getProperty("tmpDirPath") != null) {
-					tmpDirPath = realPath +properties.getProperty("tmpDirPath");
+					tmpDirPath = realPath+File.separator +properties.getProperty("tmpDirPath");
 					File ftmpDirPath = new File(tmpDirPath);
 					ftmpDirPath.mkdir();
 					ftmpDirPath = new File(tmpDirPath +  appSessionIdSubdir);
@@ -111,7 +111,7 @@ public class MainBean implements Serializable {
 							.println("set Defautl tmpDirPath = " + tmpDirPath + appSessionIdSubdir);
 				}
 				if (properties.getProperty("reportDirPath") != null) {
-					reportDirPath =realPath + properties.getProperty("reportDirPath");
+					reportDirPath =realPath+File.separator + properties.getProperty("reportDirPath");
 					System.out.println("set Defautl reportDirPath = " + reportDirPath + appSessionIdSubdir);
 					File freportDirPath = new File(reportDirPath);
 					freportDirPath.mkdir();
