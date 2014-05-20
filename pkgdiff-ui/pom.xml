@@ -10,7 +10,7 @@
 	<packaging>war</packaging>
 	<build>
 		<finalName>pkgdiff-ui</finalName>
-		
+
 	</build>
 	<dependencies>
 		<dependency>

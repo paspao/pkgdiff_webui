@@ -2,16 +2,14 @@ package it.eng.pkgdiff;
 
 import it.eng.pkgdiff.batch.DownloadMavenDependency;
 import it.eng.pkgdiff.batch.ExecPkgDiff;
+import it.eng.pkgdiff.batch.Util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -67,72 +65,90 @@ public class MainBean implements Serializable {
 	}
 
 	public String getMyFileMaven() {
-		String ret = (myFileMaven!=null)?(myFileMaven.substring(myFileMaven.lastIndexOf("/") + 1)):"";
+		String ret = (myFileMaven != null) ? (myFileMaven.substring(myFileMaven
+				.lastIndexOf("/") + 1)) : "";
 		return ret;
 	}
 
-	private Properties properties;
-
 	public MainBean() {
 		System.out.println("MainBean");
-		
+
 		FacesContext fCtx = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) fCtx.getExternalContext()
 				.getSession(false);
 		sessionId = session.getId();
-		String realPath =((ServletContext)fCtx.getExternalContext().getContext()).getRealPath(File.separator);
-		
+		String realPath = ((ServletContext) fCtx.getExternalContext()
+				.getContext()).getRealPath(File.separator);
+
 		if (useSessionId.equalsIgnoreCase("true")) {
 			appSessionIdSubdir = "/" + sessionId;
 		}
-		
-		fileData = new ArrayList<String>();
-		try {
-			properties = new Properties();
-			InputStream resourceAsStream = MainBean.class.getClassLoader()
-					.getResourceAsStream("resources.properties");
-			if (resourceAsStream != null) {
-				properties.load(resourceAsStream);
-				absolutePath =realPath+File.separator + properties.getProperty("uploadPath");
-				System.out.println("absolutePath:" + absolutePath);
-				if (properties.getProperty("uploadArtifactPath") != null) {
-					uploadArtifactPath = realPath+File.separator +properties
-							.getProperty("uploadArtifactPath");
-					System.out.println("set Defautl downloadedPath = "
-							+ uploadArtifactPath);
-				}
-				if (properties.getProperty("tmpDirPath") != null) {
-					tmpDirPath = realPath+File.separator +properties.getProperty("tmpDirPath");
-					File ftmpDirPath = new File(tmpDirPath);
-					ftmpDirPath.mkdir();
-					ftmpDirPath = new File(tmpDirPath +  appSessionIdSubdir);
-					ftmpDirPath.mkdir();
-					System.out
-							.println("set Defautl tmpDirPath = " + tmpDirPath + appSessionIdSubdir);
-				}
-				if (properties.getProperty("reportDirPath") != null) {
-					reportDirPath =realPath+File.separator + properties.getProperty("reportDirPath");
-					System.out.println("set Defautl reportDirPath = " + reportDirPath + appSessionIdSubdir);
-					File freportDirPath = new File(reportDirPath);
-					freportDirPath.mkdir();
-					freportDirPath = new File(reportDirPath +  appSessionIdSubdir);
-					freportDirPath.mkdir();
-				}
-				if (properties.getProperty("ulrReportDir") != null) {
-					ulrReportDir = properties.getProperty("ulrReportDir");
-					System.out.println("set Defautl ulrReportDir = "
-							+ ulrReportDir);
-				}
-				if (properties.getProperty("userSessionId") != null) {
-					useSessionId = properties.getProperty("userSessionId");
-					System.out.println("set Defautl userSessionId = "
-							+ useSessionId);
-				}
 
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		fileData = new ArrayList<String>();
+
+		absolutePath = realPath + File.separator
+				+ Util.getResourceProperties().getProperty("uploadPath");
+		System.out.println("absolutePath:" + absolutePath);
+		if (Util.getResourceProperties().getProperty("uploadArtifactPath") != null) {
+			uploadArtifactPath = realPath
+					+ File.separator
+					+ Util.getResourceProperties().getProperty(
+							"uploadArtifactPath");
+			System.out.println("set Defautl downloadedPath = "
+					+ uploadArtifactPath);
 		}
+		if (Util.getResourceProperties().getProperty("tmpDirPath") != null) {
+			tmpDirPath = realPath + File.separator
+					+ Util.getResourceProperties().getProperty("tmpDirPath");
+			File ftmpDirPath = new File(tmpDirPath);
+			ftmpDirPath.mkdir();
+			ftmpDirPath = new File(tmpDirPath + appSessionIdSubdir);
+			ftmpDirPath.mkdir();
+			System.out.println("set Defautl tmpDirPath = " + tmpDirPath
+					+ appSessionIdSubdir);
+		}
+		if (Util.getResourceProperties().getProperty("reportDirPath") != null) {
+			reportDirPath = realPath + File.separator
+					+ Util.getResourceProperties().getProperty("reportDirPath");
+			System.out.println("set Defautl reportDirPath = " + reportDirPath
+					+ appSessionIdSubdir);
+			File freportDirPath = new File(reportDirPath);
+			freportDirPath.mkdir();
+			freportDirPath = new File(reportDirPath + appSessionIdSubdir);
+			freportDirPath.mkdir();
+		}
+		if (Util.getResourceProperties().getProperty("ulrReportDir") != null) {
+			ulrReportDir = Util.getResourceProperties().getProperty(
+					"ulrReportDir");
+			System.out.println("set Defautl ulrReportDir = " + ulrReportDir);
+		}
+		if (Util.getResourceProperties().getProperty("userSessionId") != null) {
+			useSessionId = Util.getResourceProperties().getProperty(
+					"userSessionId");
+			System.out.println("set Defautl userSessionId = " + useSessionId);
+		}
+
+	}
+	
+	public String getReportDirPath() {
+		return reportDirPath;
+	}
+	public void setReportDirPath(String reportDirPath) {
+		this.reportDirPath = reportDirPath;
+	}
+	
+	public String getTmpDirPath() {
+		return tmpDirPath;
+	}
+	public void setTmpDirPath(String tmpDirPath) {
+		this.tmpDirPath = tmpDirPath;
+	}
+	
+	public String getUploadArtifactPath() {
+		return uploadArtifactPath;
+	}
+	public void setUploadArtifactPath(String uploadArtifactPath) {
+		this.uploadArtifactPath = uploadArtifactPath;
 	}
 
 	public String getVersion() {
@@ -198,7 +214,7 @@ public class MainBean implements Serializable {
 	public String getFileName() {
 		return fileName;
 	}
-	
+
 	// utilizzata dal fileEntry
 	public void sampleListener(FileEntryEvent e) {
 		FileEntry fe = (FileEntry) e.getComponent();
@@ -244,7 +260,7 @@ public class MainBean implements Serializable {
 	}
 
 	// utilizzata dal fileEntry
-	public List getFileData() {
+	public List<String> getFileData() {
 		return fileData;
 	}
 
@@ -260,18 +276,22 @@ public class MainBean implements Serializable {
 			if (!appSessionIdSubdir.isEmpty()) {
 				File appDir = new File(uploadArtifactPath);
 				appDir.mkdir();
-				appDir = new File( uploadArtifactPath + appSessionIdSubdir);
+				appDir = new File(uploadArtifactPath + appSessionIdSubdir);
 				appDir.mkdir();
 			}
 			myFileMaven = DownloadMavenDependency.download(groupId, artifactId,
 					versionId, uploadArtifactPath + appSessionIdSubdir);
 			if (myFileMaven == null) {
-		      FacesMessage msg = new  FacesMessage(FacesMessage.SEVERITY_ERROR, "Artifact non trovato!","Artifact non trovato!");
-			  FacesContext.getCurrentInstance().addMessage(null, msg);
+				FacesMessage msg = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR, "Artifact non trovato!",
+						"Artifact non trovato!");
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 			}
 		} catch (Exception e) {
-	      FacesMessage msg = new  FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore download artifact [" + e + "]","Errore download artifact [" + e + "]");
-		  FacesContext.getCurrentInstance().addMessage(null, msg);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Errore download artifact [" + e + "]",
+					"Errore download artifact [" + e + "]");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	}
 
@@ -293,11 +313,12 @@ public class MainBean implements Serializable {
 				appResultExecPkgDiff);
 
 		responseConfronto = appResultExecPkgDiff.toString();
-		urlDettaglio = ulrReportDir + appSessionIdSubdir + "/changes_report.html";
+		urlDettaglio = ulrReportDir + appSessionIdSubdir
+				+ "/changes_report.html";
 	}
-	
+
 	public void reset(ActionEvent event) {
-		urlDettaglio ="";
+		urlDettaglio = "";
 		fileName = "";
 		myFileMaven = "";
 		groupId = "";
