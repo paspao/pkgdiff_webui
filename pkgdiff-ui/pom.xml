@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>Pkgdiff</groupId>
+		<groupId>it.eng.esl.na</groupId>
 		<artifactId>pkgdiff</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
@@ -52,10 +52,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<repositories>
-		<repository>
-			<id>inail-nexus</id>
-			<url>http://161.27.213.71:8081/nexus/content/groups/public</url>
-		</repository>
-	</repositories>
+	
+	<name>Pkgdiff-Ui</name>
 </project>
