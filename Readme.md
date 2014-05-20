@@ -1,5 +1,6 @@
 Progetto pkgdiff_webui
 ======================
+[![Build Status](https://secure.travis-ci.org/paspao/pkgdiff_webui.png)](http://travis-ci.org/paspao/pkgdiff_webui)
 
 Descrizione
 -----------
