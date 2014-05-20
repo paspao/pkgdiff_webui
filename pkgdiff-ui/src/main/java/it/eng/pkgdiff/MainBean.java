@@ -48,6 +48,7 @@ public class MainBean implements Serializable {
     private String useSessionId = "true";
     private String responseConfronto;
     private String urlDettaglio;
+    private String styleDettaglio = "visibility='hidden'";
     
     
     private Properties properties;
@@ -99,6 +100,14 @@ public class MainBean implements Serializable {
 
 	public void setUrlDettaglio(String urlDettaglio) {
 		this.urlDettaglio = urlDettaglio;
+	}
+
+	public String getStyleDettaglio() {
+		return styleDettaglio;
+	}
+
+	public void setStyleDettaglio(String styleDettaglio) {
+		this.styleDettaglio = styleDettaglio;
 	}
 
 	public String getResponseConfronto() {
@@ -242,6 +251,7 @@ public class MainBean implements Serializable {
 		System.out.println("Effettuato ExecPkgDiff:"+appResultExecPkgDiff);
 		responseConfronto = appResultExecPkgDiff.toString();
 		urlDettaglio = ulrReportDir +appSessionIdSubdir+"/changes_report.html";
+		styleDettaglio = "visibility='visible'";
         return null;
     }
 }
