@@ -20,48 +20,93 @@
 			<ui:include src="/common/header.jspx" />
 		</f:subview>
 		<h:form id="form">
-			<ace:textEntry id="groupId" value="#{mainBean.groupId}" label="Group Id" labelPosition="left" required="true" requiredIndicator="(*)" indicatorPosition="right">
-                        <!--<ace:ajax render="@this firstNameOutput firstNameMsg"/>-->
-            </ace:textEntry>
-            <br></br>
-                    
-			<ace:textEntry id="artifactId" value="#{mainBean.artifactId}" label="Artifact Id" labelPosition="left" required="true" requiredIndicator="(*)" indicatorPosition="right">
-                        <!--<ace:ajax render="@this firstNameOutput firstNameMsg"/>-->
-            </ace:textEntry>
-            <br></br>
-                                        
-			<ace:textEntry id="versionId" value="#{mainBean.versionId}" label="Version" labelPosition="left" required="true" requiredIndicator="(*)" indicatorPosition="right">
-                        <!--  <ace:ajax render="@this firstNameOutput firstNameMsg"/> -->
-            </ace:textEntry>
-                                        
-			
+			<ice:panelGroup>
+				<fieldset>
+					<legend>Primo file</legend>
+					<ice:outputText value="File :  [#{mainBean.fileName}]"
+						rendered="#{mainBean.fileName ne ''}" />
+					<ice:panelGroup rendered="#{mainBean.fileName eq ''}">
+						<ace:fileEntry absolutePath="#{mainBean.absolutePath}"
+							relativePath="./TmpUpload/" maxFileCount="1"
+							maxFileCountMessage="Limited to 10 files uploaded concurrantly."
+							fileEntryListener="#{mainBean.sampleListener}" required="false"
+							requiredMessage="The file is required to submit this form."
+							useOriginalFilename="true"
+							useSessionSubdir="#{mainBean.useSessionId}" />
+						<br></br>
+						<h:commandButton id="commandButtonSubmit" type="submit"
+							value="Upload File" style="float:right" />
+						<br></br>
+					</ice:panelGroup>
+				</fieldset>
+			</ice:panelGroup>
+			<ice:panelGroup>
+				<fieldset>
+					<legend>Secondo file</legend>
+					<ice:panelGroup>
+						<ice:selectOneRadio value="#{mainBean.tipoFile}"
+							partialSubmit="true" rendered="false">
+							<f:selectItem itemLabel="Cerca per artifact"
+								itemValue="byArtifact" />
+							<f:selectItem itemLabel="Carica file" itemValue="byFile" />
+						</ice:selectOneRadio>
 
+						<ice:outputText value="File :  [#{mainBean.myFileMaven}]"
+							rendered="#{mainBean.myFileMaven ne ''}" />
+
+						<ice:panelGroup
+							rendered="#{mainBean.tipoFile eq 'byArtifact' and mainBean.myFileMaven eq ''}">
+							<ice:panelGrid columns="1">
+								<ice:messages globalOnly="true" />
+								<ace:textEntry id="groupId" value="#{mainBean.groupId}"
+									label="Group Id" labelPosition="left" requiredIndicator="(*)"
+									indicatorPosition="right">
+									<!--<ace:ajax render="@this firstNameOutput firstNameMsg"/>-->
+								</ace:textEntry>
+
+								<ace:textEntry id="artifactId" value="#{mainBean.artifactId}"
+									label="Artifact Id" labelPosition="left"
+									requiredIndicator="(*)" indicatorPosition="right">
+									<!--<ace:ajax render="@this firstNameOutput firstNameMsg"/>-->
+								</ace:textEntry>
+
+								<ace:textEntry id="versionId" value="#{mainBean.versionId}"
+									label="Version" labelPosition="left" requiredIndicator="(*)"
+									indicatorPosition="right">
+									<!--  <ace:ajax render="@this firstNameOutput firstNameMsg"/> -->
+								</ace:textEntry>
+							</ice:panelGrid>
+							<ice:commandButton value="Scarica artifact"
+								actionListener="#{mainBean.downloadArtifact}" />
+						</ice:panelGroup>
+
+						<ice:panelGroup rendered="#{mainBean.tipoFile eq 'byFile'}">
+							<ace:fileEntry absolutePath="#{mainBean.absolutePath}"
+								relativePath="./TmpUpload/" maxFileCount="1"
+								maxFileCountMessage="Limited to 10 files uploaded concurrantly."
+								fileEntryListener="#{mainBean.sampleListener}" required="false"
+								requiredMessage="The file is required to submit this form."
+								useOriginalFilename="true"
+								useSessionSubdir="#{mainBean.useSessionId}" />
+							<br></br>
+							<h:commandButton type="submit" value="Upload File"
+								style="float:right" />
+							<br></br>
+						</ice:panelGroup>
+					</ice:panelGroup>
+				</fieldset>
+			</ice:panelGroup>
 			<br></br>
-			
-			<ace:fileEntry id="file-entry" 
-				 absolutePath="#{mainBean.absolutePath}"
-                 relativePath="./TmpUpload/"
-                 maxFileCount="1" 
-                 maxFileCountMessage="Limited to 10 files uploaded concurrantly." 
-                 fileEntryListener="#{mainBean.sampleListener}" 
-                 required="false" 
-                 requiredMessage="The file is required to submit this form." 
-                 useOriginalFilename="true" 
-                 useSessionSubdir="#{mainBean.useSessionId}"/>  
-			<br></br>      
-          	<h:commandButton id="commandButtonSubmit" type="submit" value="Upload File" />
-          	<br></br>
-			
-			<br></br>
-			<ace:pushButton id="pushBttnAction"			
-                 value="Confronta Archivio"
-                 action="#{mainBean.executeButtonConfronta}">                        
-             </ace:pushButton>            
+			<ice:commandButton value="Confronta Archivio"
+				rendered="#{mainBean.fileName ne '' and mainBean.myFileMaven ne ''}"
+				actionListener="#{mainBean.executeButtonConfronta}" />
+			<ice:commandButton value="Reset" actionListener="#{mainBean.reset}" />
 		</h:form>
-		 <br></br> 
-         <ice:outputText value="#{mainBean.responseConfronto}"></ice:outputText>
-         <br></br> 
-		 <a href="#{mainBean.urlDettaglio}" target="blank" style="#{mainBean.styleDettaglio}">Dettagli</a>
+		<br></br>
+		<ice:outputText value="#{mainBean.responseConfronto}" escape="false"
+			rendered="#{mainBean.urlDettaglio ne ''}" />
+		<ice:outputLink value="#{mainBean.urlDettaglio}" target="blank"
+			rendered="#{mainBean.urlDettaglio ne ''}">Dettagli</ice:outputLink>
 	</h:body>
 </f:view>
 </html>
