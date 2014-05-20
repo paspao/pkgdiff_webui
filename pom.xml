@@ -50,6 +50,10 @@
 	</build>
 	<repositories>
 		<repository>
+			<id>icefaces</id>
+			<url>http://anonsvn.icefaces.org/repo/maven2/releases/</url>
+		</repository>
+		<repository>
 			<id>inail-nexus</id>
 			<url>http://161.27.213.71:8081/nexus/content/groups/public</url>
 		</repository>
