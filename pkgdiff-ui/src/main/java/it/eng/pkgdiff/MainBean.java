@@ -18,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.icefaces.ace.component.fileentry.FileEntry;
@@ -79,6 +80,7 @@ public class MainBean implements Serializable {
 		HttpSession session = (HttpSession) fCtx.getExternalContext()
 				.getSession(false);
 		sessionId = session.getId();
+		String realPath =((ServletContext)fCtx.getExternalContext().getContext()).getRealPath(File.separator);
 		
 		if (useSessionId.equalsIgnoreCase("true")) {
 			appSessionIdSubdir = "/" + sessionId;
@@ -88,19 +90,19 @@ public class MainBean implements Serializable {
 		try {
 			properties = new Properties();
 			InputStream resourceAsStream = MainBean.class.getClassLoader()
-					.getResourceAsStream("./resources.properties");
+					.getResourceAsStream("resources.properties");
 			if (resourceAsStream != null) {
 				properties.load(resourceAsStream);
-				absolutePath = properties.getProperty("uploadPath");
+				absolutePath =realPath + properties.getProperty("uploadPath");
 				System.out.println("absolutePath:" + absolutePath);
 				if (properties.getProperty("uploadArtifactPath") != null) {
-					uploadArtifactPath = properties
+					uploadArtifactPath = realPath +properties
 							.getProperty("uploadArtifactPath");
 					System.out.println("set Defautl downloadedPath = "
 							+ uploadArtifactPath);
 				}
 				if (properties.getProperty("tmpDirPath") != null) {
-					tmpDirPath = properties.getProperty("tmpDirPath");
+					tmpDirPath = realPath +properties.getProperty("tmpDirPath");
 					File ftmpDirPath = new File(tmpDirPath);
 					ftmpDirPath.mkdir();
 					ftmpDirPath = new File(tmpDirPath +  appSessionIdSubdir);
@@ -109,7 +111,7 @@ public class MainBean implements Serializable {
 							.println("set Defautl tmpDirPath = " + tmpDirPath + appSessionIdSubdir);
 				}
 				if (properties.getProperty("reportDirPath") != null) {
-					reportDirPath = properties.getProperty("reportDirPath");
+					reportDirPath =realPath + properties.getProperty("reportDirPath");
 					System.out.println("set Defautl reportDirPath = " + reportDirPath + appSessionIdSubdir);
 					File freportDirPath = new File(reportDirPath);
 					freportDirPath.mkdir();
