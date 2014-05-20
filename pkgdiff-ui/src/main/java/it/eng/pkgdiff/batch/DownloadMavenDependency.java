@@ -34,6 +34,7 @@ public class DownloadMavenDependency {
 	 *            </p>
 	 * @param downloadedPath
 	 *            Directory dove scariacare l'artefatto.
+	 * @return Il path al file scaricato.
 	 */
 	public static String download(String dep,String downloadedPath) {
 		
@@ -77,6 +78,7 @@ public class DownloadMavenDependency {
 	 *            version di maven.
 	 * @param downloadedPath
 	 *            Directory dove scariacare l'artefatto.
+	 * @return Il path al file scaricato.
 	 */
 	public static String download(String groupId, String artifactId,
 			String version,String downloadedPath) {
