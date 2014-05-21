@@ -45,6 +45,8 @@ public class MainBean implements Serializable {
 	private String artifactId;
 	private String versionId;
 
+	private String dependency;
+	
 	private String absolutePath;
 	private String uploadArtifactPath;
 	private String tmpDirPath;
@@ -57,6 +59,14 @@ public class MainBean implements Serializable {
 	String sessionId = "";
 	String appSessionIdSubdir = "";
 
+	public String getDependency() {
+		return dependency;
+	}
+	
+	public void setDependency(String dependency) {
+		this.dependency = dependency;
+	}
+	
 	public void setTipoFile(String tipoFile) {
 		this.tipoFile = tipoFile;
 	}
@@ -128,7 +138,7 @@ public class MainBean implements Serializable {
 					"userSessionId");
 			System.out.println("set Defautl userSessionId = " + useSessionId);
 		}
-
+		tipoFile = "byArtifact";
 	}
 	
 	public String getReportDirPath() {
@@ -281,8 +291,13 @@ public class MainBean implements Serializable {
 				appDir.mkdir();
 			}
 			String fromUrl = "";			
-			Artifact artifact = DownloadMavenDependency.download(groupId, artifactId,
-					versionId, uploadArtifactPath + appSessionIdSubdir);
+			Artifact artifact = null;
+			
+			if (tipoFile.equalsIgnoreCase("byArtifact"))
+			  artifact = DownloadMavenDependency.download(groupId, artifactId, versionId, uploadArtifactPath + appSessionIdSubdir);
+			else
+			  artifact = DownloadMavenDependency.download(dependency, uploadArtifactPath + appSessionIdSubdir);
+
 			if (artifact == null) {
 				FacesMessage msg = new FacesMessage(
 						FacesMessage.SEVERITY_ERROR, "Artifact non trovato!",
@@ -318,8 +333,8 @@ public class MainBean implements Serializable {
 		OutputStream appResultExecPkgDiff = new ByteArrayOutputStream();
 
 		// ExecPkgDiff.execute(uploadArtifactPath+appSessionIdSubdir+"/"+fileName,
-		ExecPkgDiff.execute(myFileMaven, absolutePath + appSessionIdSubdir
-				+ "/" + fileName, tmpDirPath + appSessionIdSubdir,
+		ExecPkgDiff.execute(absolutePath + appSessionIdSubdir
+				+ "/" + fileName, myFileMaven, tmpDirPath + appSessionIdSubdir,
 				reportDirPath + appSessionIdSubdir + "/changes_report.html",
 				appResultExecPkgDiff);
 
@@ -335,5 +350,6 @@ public class MainBean implements Serializable {
 		groupId = "";
 		artifactId = "";
 		versionId = "";
+		dependency = "";
 	}
 }
