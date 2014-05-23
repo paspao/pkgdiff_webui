@@ -46,7 +46,7 @@ public class MainBean implements Serializable {
 	private String versionId;
 
 	private String dependency;
-	
+
 	private String absolutePath;
 	private String uploadArtifactPath;
 	private String tmpDirPath;
@@ -62,11 +62,11 @@ public class MainBean implements Serializable {
 	public String getDependency() {
 		return dependency;
 	}
-	
+
 	public void setDependency(String dependency) {
 		this.dependency = dependency;
 	}
-	
+
 	public void setTipoFile(String tipoFile) {
 		this.tipoFile = tipoFile;
 	}
@@ -140,24 +140,27 @@ public class MainBean implements Serializable {
 		}
 		tipoFile = "byArtifact";
 	}
-	
+
 	public String getReportDirPath() {
 		return reportDirPath;
 	}
+
 	public void setReportDirPath(String reportDirPath) {
 		this.reportDirPath = reportDirPath;
 	}
-	
+
 	public String getTmpDirPath() {
 		return tmpDirPath;
 	}
+
 	public void setTmpDirPath(String tmpDirPath) {
 		this.tmpDirPath = tmpDirPath;
 	}
-	
+
 	public String getUploadArtifactPath() {
 		return uploadArtifactPath;
 	}
+
 	public void setUploadArtifactPath(String uploadArtifactPath) {
 		this.uploadArtifactPath = uploadArtifactPath;
 	}
@@ -290,13 +293,16 @@ public class MainBean implements Serializable {
 				appDir = new File(uploadArtifactPath + appSessionIdSubdir);
 				appDir.mkdir();
 			}
-			String fromUrl = "";			
+			String fromUrl = "";
 			Artifact artifact = null;
-			
+
 			if (tipoFile.equalsIgnoreCase("byArtifact"))
-			  artifact = DownloadMavenDependency.download(groupId, artifactId, versionId, uploadArtifactPath + appSessionIdSubdir);
+				artifact = DownloadMavenDependency.download(groupId,
+						artifactId, versionId, uploadArtifactPath
+								+ appSessionIdSubdir);
 			else
-			  artifact = DownloadMavenDependency.download(dependency, uploadArtifactPath + appSessionIdSubdir);
+				artifact = DownloadMavenDependency.download(dependency,
+						uploadArtifactPath + appSessionIdSubdir);
 
 			if (artifact == null) {
 				FacesMessage msg = new FacesMessage(
@@ -309,7 +315,8 @@ public class MainBean implements Serializable {
 			myFileMaven = artifact.getFile();
 			fromUrl = artifact.getUrl();
 
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Artifact scaricato dal repository [" + fromUrl + "]",
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					"Artifact scaricato dal repository [" + fromUrl + "]",
 					"Artifact scaricato dal repository [" + fromUrl + "]");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 
@@ -333,9 +340,9 @@ public class MainBean implements Serializable {
 		OutputStream appResultExecPkgDiff = new ByteArrayOutputStream();
 
 		// ExecPkgDiff.execute(uploadArtifactPath+appSessionIdSubdir+"/"+fileName,
-		ExecPkgDiff.execute(absolutePath + appSessionIdSubdir
-				+ "/" + fileName, myFileMaven, tmpDirPath + appSessionIdSubdir,
-				reportDirPath + appSessionIdSubdir + "/changes_report.html",
+		ExecPkgDiff.execute(absolutePath + appSessionIdSubdir + "/" + fileName,
+				myFileMaven, tmpDirPath + appSessionIdSubdir, reportDirPath
+						+ appSessionIdSubdir + "/changes_report.html",
 				appResultExecPkgDiff);
 
 		responseConfronto = appResultExecPkgDiff.toString();
@@ -351,5 +358,25 @@ public class MainBean implements Serializable {
 		artifactId = "";
 		versionId = "";
 		dependency = "";
+		responseConfronto = "";
+	}
+
+	public void resetFirst(ActionEvent event) {
+		fileName = "";
+		urlDettaglio = "";
+		responseConfronto = "";
+	}
+
+	public void resetSecond(ActionEvent event) {
+		myFileMaven = "";
+		if (tipoFile.equalsIgnoreCase("byArtifact")) {
+  	      dependency = "";
+		} else {
+		  groupId = "";
+		  artifactId = "";
+		  versionId = "";
+		}
+		urlDettaglio = "";
+		responseConfronto = "";
 	}
 }

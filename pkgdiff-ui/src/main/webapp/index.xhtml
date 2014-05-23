@@ -38,6 +38,8 @@
 							value="Upload File" style="float:right" />
 						<br></br>
 					</ice:panelGroup>
+					<ice:commandButton rendered="#{mainBean.fileName ne ''}"
+					  value="Carica nuovo file" partialSubmit="true" style="float:right" actionListener="#{mainBean.resetFirst}"/>
 				</fieldset>
 			</ice:panelGroup>
 			<ice:panelGroup>
@@ -88,6 +90,9 @@
 							<ice:commandButton value="Scarica artifact"
 								actionListener="#{mainBean.downloadArtifact}" />
 						</ice:panelGroup>
+						<ice:commandButton rendered="#{mainBean.myFileMaven ne ''}"
+					      value="Seleziona nuovo artifact" partialSubmit="true" style="float:right" actionListener="#{mainBean.resetSecond}"/>
+						
 					</ice:panelGroup>
 				</fieldset>
 			</ice:panelGroup>
@@ -98,6 +103,8 @@
 			<ice:commandButton value="Reset" actionListener="#{mainBean.reset}" />
 		</h:form>
 		<br></br>
+		<ice:outputText rendered="#{mainBean.urlDettaglio ne ''}" 
+		 value="Confronto local file [#{mainBean.fileName}] con remote file [#{mainBean.myFileMaven}]" />
 		<ice:outputText value="#{mainBean.responseConfronto}" escape="false"
 			rendered="#{mainBean.urlDettaglio ne ''}" />
 		<ice:outputLink value="#{mainBean.urlDettaglio}" target="blank"
